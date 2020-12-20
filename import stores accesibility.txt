@@ -1,0 +1,26 @@
+-- product visibility
+insert into productsstore  (fk_products, fk_stores, created_at, fk_createdby, updated_at, fk_updatedby)
+SELECT pk_products, 1002, NOW(), 1000, NOW(), 1000
+FROM products
+WHERE pk_products not in (
+    select fk_products FROM productsstore where fk_stores = 1002
+)
+
+-- product qty
+insert into productsqty (fk_products, fk_stores, qty, oldqty, created_at, fk_createdby, updated_at, fk_updatedby)
+SELECT pk_products, 1002, 100, 0, NOW(), 1000, NOW(), 1000
+FROM products
+WHERE pk_products not in (
+    select fk_products FROM productsqty where fk_stores = 1002
+)
+
+-- product prices
+insert into productsprices (fk_products, fk_stores, price, oldprice, created_at, fk_createdby, updated_at, fk_updatedby)
+SELECT fk_products, 1002, price, oldprice, NOW(), 1000, NOW(), 1000
+FROM productsprices
+WHERE fk_products in (
+    select fk_products FROM productsprices where fk_stores in (1000)
+)
+
+
+SQL: select * from `vw_salesmstr` where `fk_stores` = 1002 and `pk_salesmstr` = 0 and `stat` = 1 limit 1"
